@@ -1,5 +1,3 @@
-var x=undefined;
-
 //alert(window.add(10,1));
 //alert(window.multiply(10,2));
 //alert(x);
