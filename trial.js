@@ -1,6 +1,16 @@
 'use strict';
 
 function Person(f, l){
+	if(Person.count === undefined){
+		Person.count = 0; //static property (value can be changed for all objects by changing in any one)
+	}
+	if(Person.sumFirstNameLen === undefined){
+		Person.sumFirstNameLen = 0;
+	}
+	if(Person.avgFirstNameLen === undefined){
+		Person.avgFirstNameLen = 0;
+	}
+	
 	/*var firstName = 'John'; //private variable
 	var lastName = 'Doe'; //private variable
 	this.fn = 'XXX'; //all public member attributes have to be prefixed with "this."*/
@@ -10,7 +20,7 @@ function Person(f, l){
 	
 	//change firstName and lastName to private variables
 	var firstName = f;
-	var lastName= l;
+	var lastName = l;
 	
 	//getters
 	this.getFirstName = function(){
@@ -30,11 +40,9 @@ function Person(f, l){
 		lastName = val;
 	};
 	
-	
-	var fullName = function () {
+	this.fullName = function () {
 		return this.getFirstName() + ' ' + this.getLastName();
 	};
-	this.fullName = fullName;
 	
 	/*var age = a; //age is read only variable-- cannot be changed at run time
 	
@@ -47,6 +55,11 @@ function Person(f, l){
 	this.setAge = function(val){
 		age = val;
 	};*/
+	
+	//calc the avg First Name length of all objects
+	Person.sumFirstNameLen += firstName.length;
+	Person.count++;
+	Person.avgFirstNameLen = Person.sumFirstNameLen/Person.count;
 }
 
 var x = new Person('John', 'Doe');
@@ -55,7 +68,13 @@ var y = new Person('Gayatri', 'Rath');
 console.log('Full NAME: ' + x.fullName());
 //console.log('AGE: ' + x.getAge());
 
+Person.prototype.age = 10; //(value can be different for every new object; property is available for every object)
+Person.prototype.fullNameLen = function(){
+	return this.fullName().length;
+};
+
 window.onload = function () {
+	var person1 = new Person ('Sameer', 'Dash');
 	var firstNameEl = document.getElementById('first');
 	var lastNameEl = document.getElementById('last');
 
@@ -63,10 +82,12 @@ window.onload = function () {
 	lastNameEl.addEventListener('keyup', getLastName);
 	
 	function getFirstName(){
-		document.getElementById('f1').innerHTML = firstNameEl.value;	
+		person1.setFirstName(firstNameEl.value);
+		document.getElementById('f1').innerHTML = person1.getFirstName();	
 	}
 
 	function getLastName(){
-		document.getElementById('l1').innerHTML = lastNameEl.value;
+		person1.setLastName(lastNameEl.value);
+		document.getElementById('l1').innerHTML = person1.getLastName();
 	}
 };
